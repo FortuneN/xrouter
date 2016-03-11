@@ -10,8 +10,8 @@ Good for when you writing a componet to fit into a page that do don't own (or ha
 <html>
   <head>
     <title>xrouter</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
-    <script type="text/javascript" src="xrouter.js"></script>
+    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript" src="../xrouter.js"></script>
     <script type="text/javascript" src="app.js"></script>
   </head>
 	<body ng-app="app">

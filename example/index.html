@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<title>xrouter</title>
+		<script type="text/javascript" src="angular.js"></script>
+		<script type="text/javascript" src="../xrouter.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+	</head>
+	<body ng-app="app">
+		<h1>Xrouter test</h1>
+		<a xhref="xindex.html">xindex.html</a> | <a xhref="home.html?a=b">home.html</a> | <a ng-click="xgoto('about.html')">about.html</a> | <a ng-click="xgoto('contacts.html?c=d')">contacts. | <a xhref="no where">no where</a>html</a> 
+		<div xview></div>
+	</body>
+</html>

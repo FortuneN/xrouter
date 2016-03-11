@@ -75,6 +75,7 @@ app.controller('home.html', function($scope, xparameters) {
 ## Notes
 - The default route/page is xindex.html
 - If any page is not found (including xindex.html), the x404.html route/page is shown
+- The controllers are named the same as the page e.g. app.controller('home.html', function($scope) { ... });
 
 ## Credits
 - Stackoverflow question: <a href="http://stackoverflow.com/questions/26632909" target="_blank">26632909</a>

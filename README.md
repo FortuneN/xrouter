@@ -6,6 +6,7 @@ Good for when you writing a componet to fit into a page that do don't own (or ha
 
 ## Usage
 
+index.html
 ```
 <html>
   <head>
@@ -22,6 +23,35 @@ Good for when you writing a componet to fit into a page that do don't own (or ha
 </html>
 ```
 
+app.js
+```
+angular.module('app', ['xroute'])
+
+.controller('xindex.html', function ($scope, xparameters) {
+	console.log('xparameters: ', xparameters);
+	$scope.title = 'xindex.html';
+})
+
+.controller('x404.html', function ($scope, xparameters) {
+	console.log('xparameters: ', xparameters);
+	$scope.title = 'x404.html';
+})
+
+.controller('home.html', function ($scope, xparameters) {
+	console.log('xparameters: ', xparameters);
+	$scope.title = 'home.html';
+})
+
+.controller('about.html', function ($scope, xparameters) {
+	console.log('xparameters: ', xparameters);
+	$scope.title = 'about.html';
+})
+
+.controller('contacts.html', function ($scope, xparameters) {
+	console.log('xparameters: ', xparameters);
+	$scope.title = 'contacts.html';
+});
+```
 
 ### xview
 This is where the templates come in

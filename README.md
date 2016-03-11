@@ -77,7 +77,7 @@ app.controller('home.html', function($scope, xparameters) {
 - If any page is not found (including xindex.html), the x404.html route/page is shown
 
 ## Credits
-- Stackoverflow question: <a href="http://stackoverflow.com/q/26632909/949476" target="_blank">http://stackoverflow.com/q/26632909/949476</a>
+- Stackoverflow question: <a href="http://stackoverflow.com/q/26632909/949476"  target="_blank">http://stackoverflow.com/q/26632909/949476</a>
 - Stackoverflow user: <a href="http://stackoverflow.com/users/949476/dfsq" target="_blank">dfsq</a>
 
 

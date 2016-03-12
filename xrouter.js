@@ -3,7 +3,7 @@
 (function(angular_module) {
 	angular._xrouter_modulenames_ = [];
 	angular.module = function() {
-		if (arguments.length != 0) angular._xrouter_modulenames_.push(arguments[0]);
+		if (arguments.length > 1) angular._xrouter_modulenames_.push(arguments[0]);
 		return angular_module.apply(null, arguments);
 	}
 })(angular.module);

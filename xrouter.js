@@ -33,7 +33,7 @@ angular.module('xroute', []).provider('xroute', function () {
 	this.$get = function () {
 		return {
 			goto: function (path, parameters) {
-				if (!path || path == currentRoute.templateUrl) return;
+				if (!path) return;
 				if (path.indexOf(' ') != -1) throw 'Spaces are not allowed in page/route names';
 				var route = addOrGetRoute(path);
 				var xparameters = getQueryParameters(path);
@@ -62,16 +62,21 @@ angular.module('xroute', []).provider('xroute', function () {
 			
 			$scope.xgoto = xroute.goto;
 			
+			var pending404 = false;
 			xroute.onRouteChange(function (newRoute, oldRoute, xparameters) {
 				
 				$scope.templatePath = newRoute.templateUrl;
 				
 				try {
 					$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
+					pending404 = false;
 				} catch (e) {
 					var errorStr = (e + '');
 					if (errorStr.indexOf('Error: [ng:areq] Argument') != -1 && errorStr.indexOf('is not a function, got undefined') != -1) {
-						xroute.goto('x404.html');
+						if (!pending404) {
+							pending404 = true;
+							xroute.goto('x404.html');
+						}
 					} else {
 						throw e;
 					}

@@ -1,14 +1,12 @@
+(function(angular_module) {
+	angular.modules = [];
+	angular.module = function() {
+		if (arguments.length != 0)  angular.modules.push(arguments[0]);
+		return angular_module.apply(null, arguments);
+	}
+})(angular.module);
+
 angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
-	
-	//decorate
-	
-	(function(angular_module) {
-		angular.modules = [];
-		angular.module = function() {
-			if (arguments.length != 1)  angular.modules.push(arguments[0]);
-			return angular_module.apply(null, arguments);
-		}
-	})(angular.module);
 	
 	//fields
 	

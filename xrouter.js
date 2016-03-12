@@ -63,17 +63,19 @@ angular.module('xroute', []).provider('xroute', function () {
 			$scope.xgoto = xroute.goto;
 			
 			xroute.onRouteChange(function (newRoute, oldRoute, xparameters) {
-				if (newRoute && oldRoute && newRoute.templateUrl != oldRoute.templateUrl){ 
-					$scope.templatePath = newRoute.templateUrl;
-					try {
-						$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
-					} catch (e) {
-						var errorStr = (e + '');
-						if (errorStr.indexOf('Error: [ng:areq] Argument') != -1 && errorStr.indexOf('is not a function, got undefined') != -1) {
-							xroute.goto('x404.html');
-						} else {
-							throw e;
-						}
+				
+				if (newRoute && oldRoute && newRoute.templateUrl == oldRoute.templateUrl) return; // don't reload a route (there are bad side effects when the route/page does not exist)
+				
+				$scope.templatePath = newRoute.templateUrl;
+				
+				try {
+					$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
+				} catch (e) {
+					var errorStr = (e + '');
+					if (errorStr.indexOf('Error: [ng:areq] Argument') != -1 && errorStr.indexOf('is not a function, got undefined') != -1) {
+						xroute.goto('x404.html');
+					} else {
+						throw e;
 					}
 				}
 			});

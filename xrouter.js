@@ -1,9 +1,9 @@
 //a way to obtain all the registered modules
 
 (function(angular_module) {
-	angular.modules = [];
+	angular._xrouter_modulenames_ = [];
 	angular.module = function() {
-		if (arguments.length != 0)  angular.modules.push(arguments[0]);
+		if (arguments.length != 0) angular._xrouter_modulenames_.push(arguments[0]);
 		return angular_module.apply(null, arguments);
 	}
 })(angular.module);
@@ -48,8 +48,9 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	};
 	
 	function registerController(controllerName) {
-		for (var mi = 0; mi < angular.modules.length; mi++) {
-			var queue = angular.module(angular.modules[mi])._invokeQueue;
+		var moduleName = null;
+		while (moduleName = angular._xrouter_modulenames_.pop()) {
+			var queue = angular.module(moduleName)._invokeQueue;
 			for (var i = 0; i < queue.length; i++) {
 				var call = queue[i];
 				if (call[0] == "$controllerProvider" && call[1] == "register" && call[2][0] == controllerName) {

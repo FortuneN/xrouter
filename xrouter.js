@@ -33,7 +33,7 @@ angular.module('xroute', []).provider('xroute', function () {
 	this.$get = function () {
 		return {
 			goto: function (path, parameters) {
-				if (!path) return;
+				if (!path || currentRoute.templateUrl == path) return;
 				if (path.indexOf(' ') != -1) throw 'Spaces are not allowed in page/route names';
 				var route = addOrGetRoute(path);
 				var xparameters = getQueryParameters(path);
@@ -63,8 +63,6 @@ angular.module('xroute', []).provider('xroute', function () {
 			$scope.xgoto = xroute.goto;
 			
 			xroute.onRouteChange(function (newRoute, oldRoute, xparameters) {
-				
-				if (newRoute && oldRoute && newRoute.templateUrl == oldRoute.templateUrl) return; // don't reload a route (there are bad side effects when the route/page does not exist)
 				
 				$scope.templatePath = newRoute.templateUrl;
 				

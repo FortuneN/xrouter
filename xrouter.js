@@ -1,13 +1,13 @@
-﻿angular.module('xroute', []).provider('xroute', function () {
-
+angular.module('xroute', []).provider('xroute', function () {
+	
 	//fields
-
+	
 	var routes = {};
 	var stack = [];
 	var currentRoute = null;
-
+	
 	//methods
-
+	
 	function getQueryParameters(url) {
 		if (!url || url.indexOf('?') == -1) return {};
 		var qs = url.substring(url.indexOf('?') + 1).split('&');
@@ -17,7 +17,7 @@
 		}
 		return result;
 	};
-
+	
 	function addOrGetRoute(path) {
 		var route = routes[path];
 		if (path && !route) {
@@ -27,9 +27,9 @@
 		}
 		return route;
 	};
-
+	
 	//public
-
+	
 	this.$get = function () {
 		return {
 			goto: function (path, parameters) {
@@ -48,9 +48,9 @@
 			},
 		};
 	};
-
+	
 	//init with default route
-
+	
 	currentRoute = addOrGetRoute('xindex.html');
 })
 
@@ -58,17 +58,23 @@
 	return {
 		template: '<div ng-include="templatePath"></div>',
 		link: function ($scope) {
-
+			
+			var tried404 = false;
 			$scope.xgoto = xroute.goto;
-
+			
 			xroute.onRouteChange(function (newRoute, oldRoute, xparameters) {
+				
 				$scope.templatePath = newRoute.templateUrl;
 				try {
 					$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
+					tried404 = false;
 				} catch (e) {
 					var errorStr = (e + '');
 					if (errorStr.indexOf('Error: [ng:areq] Argument') != -1 && errorStr.indexOf('is not a function, got undefined') != -1) {
-						xroute.goto('x404.html');
+						if (!tried404) {
+							tried404 = true;
+							xroute.goto('x404.html');
+						}
 					} else {
 						throw e;
 					}
@@ -86,15 +92,15 @@
 		priority: 1001, // compiles first
 		terminal: true, // prevent lower priority directives to compile after it
 		compile: function (element) {
-
+			
 			var stringValue = element.attr('xhref');
 			var parsedValue; try { var parsedValue = $parse(stringValue)(); } catch (e) { }
 			stringValue = ((parsedValue || stringValue) + '').replace("'", "\'");
-
+			
 			element.removeAttr('xhref');
 			element.attr('href', '#');
 			element.attr('ng-click', "xgoto('" + stringValue + "')");
-
+			
 			var fn = $compile(element);
 			return function (scope) { fn(scope); };
 		}

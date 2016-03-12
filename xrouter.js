@@ -46,7 +46,7 @@ angular.module('xroute', []).provider('xroute', function () {
 		var route = routes[path];
 		if (route) return callback && callback(route);
 		
-		loadScript(path, function() {
+		loadScript(path + '.js', function() {
 			route = routes[path] = { controller: path, templateUrl: path };
 			return callback && callback(route);
 		});

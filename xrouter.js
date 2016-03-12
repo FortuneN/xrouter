@@ -68,12 +68,12 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		if (indexOfQ != -1) path = path.substr(0, indexOfQ);
 		
 		var route = routes[path];
-		if (route) return callback && callback(route);
+		if (route) callback(route);
 		
 		loadScript(path + '.js', function() {
 			registerController(path);
 			route = routes[path] = { controller: path, templateUrl: path };
-			return callback && callback(route);
+			callback(route);
 		});
 	};
 	

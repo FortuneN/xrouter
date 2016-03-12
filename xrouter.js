@@ -46,6 +46,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 				$controllerProvider.register(controllerName, call[2][1]);
 			}
 		}
+		$controllerProvider.register(controllerName, controllerName);
 	};
 	
 	function addOrGetRoute(path, callback) {

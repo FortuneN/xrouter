@@ -49,8 +49,8 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	
 	function registerController(controllerName) {
 		var moduleName = null;
-		while (moduleName = angular._xrouter_modulenames_.pop()) {
-			var queue = angular.module(moduleName)._invokeQueue;
+		for (var mi = 0; mi < angular._xrouter_modulenames_.length; mi++) {
+			var queue = angular.module(angular._xrouter_modulenames_[mi])._invokeQueue;
 			for (var i = 0; i < queue.length; i++) {
 				var call = queue[i];
 				if (call[0] == "$controllerProvider" && call[1] == "register" && call[2][0] == controllerName) {

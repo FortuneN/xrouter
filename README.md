@@ -1,7 +1,7 @@
 # xrouter
 An angular router that does not use #/url for page change and does not require route configuration.
 
-Good for when you writing a componet to fit into a page that do don't own (or have control over) such that you have all the goodness of angular without fiddling the url.
+Good for when you writing a componet to fit into a page that you don't own (or have control over) such that you have all the goodness of angular without fiddling the url.
 
 
 ## Usage

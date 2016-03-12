@@ -1,3 +1,5 @@
+//a way to obtain all the registered modules
+
 (function(angular_module) {
 	angular.modules = [];
 	angular.module = function() {
@@ -5,6 +7,8 @@
 		return angular_module.apply(null, arguments);
 	}
 })(angular.module);
+
+//xroute declaration begins here
 
 angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	

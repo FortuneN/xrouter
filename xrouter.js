@@ -53,7 +53,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			for (var i = 0; i < queue.length; i++) {
 				var call = queue[i];
 				if (call[0] == "$controllerProvider" && call[1] == "register" && call[2][0] == controllerName) {
-					$controllerProvider.register(controllerName, call[2][1]);
+					return $controllerProvider.register(controllerName, call[2][1]);
 				}
 			}
 		}

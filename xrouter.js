@@ -1,4 +1,4 @@
-angular.module('xroute', []).provider('xroute', function () {
+angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	
 	//fields
 	

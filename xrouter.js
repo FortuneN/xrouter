@@ -49,7 +49,7 @@ angular.module('xroute', []).provider('xroute', function () {
 		loadScript(path, function() {
 			route = routes[path] = { controller: path, templateUrl: path };
 			return callback && callback(route);
-		}
+		});
 	};
 	
 	//public

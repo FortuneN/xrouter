@@ -18,14 +18,38 @@ angular.module('xroute', []).provider('xroute', function () {
 		return result;
 	};
 	
-	function addOrGetRoute(path) {
+	function loadScript(url, callback)  {
+		
+		// Adding the script tag to the head as suggested before
+		var head = document.getElementsByTagName('head')[0];
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = url;
+		
+		// Then bind the event to the callback function.
+		// There are several events for cross browser compatibility.
+		script.onreadystatechange = callback;
+		script.onload = callback;
+		
+		// Fire the loading
+		head.appendChild(script);
+	};
+	
+	function addOrGetRoute(path, callback) {
+		
+		if (!path) throw 'path is required';
+		if (path.indexOf(' ') != -1) throw 'spaces are not allowed in page/route names';
+		
+		var indexOfQ = path.indexOf('?');
+		if (indexOfQ != -1) path = path.substr(0, indexOfQ);
+		
 		var route = routes[path];
-		if (path && !route) {
-			var indexOfQ = path.indexOf('?');
-			if (indexOfQ != -1) path = path.substr(0, indexOfQ);
+		if (route) return callback && callback(route);
+		
+		loadScript(path, function() {
 			route = routes[path] = { controller: path, templateUrl: path };
+			return callback && callback(route);
 		}
-		return route;
 	};
 	
 	//public
@@ -33,13 +57,12 @@ angular.module('xroute', []).provider('xroute', function () {
 	this.$get = function () {
 		return {
 			goto: function (path, parameters) {
-				if (!path) return;
-				if (path.indexOf(' ') != -1) throw 'Spaces are not allowed in page/route names';
-				var route = addOrGetRoute(path);
-				var xparameters = getQueryParameters(path);
-				if (typeof parameters == 'string') for (var prop in parameters) xparameters[pop] = parameters[prop];
-				stack.forEach(function (callback) { callback(route, currentRoute, xparameters) });
-				currentRoute = route;
+				addOrGetRoute(path, function(route) {
+					var xparameters = getQueryParameters(path);
+					if (typeof parameters == 'string') for (var prop in parameters) xparameters[pop] = parameters[prop];
+					stack.forEach(function (callback) { callback(route, currentRoute, xparameters) });
+					currentRoute = route;
+				});
 			},
 			onRouteChange: function (callback) {
 				stack.push(callback);
@@ -49,10 +72,6 @@ angular.module('xroute', []).provider('xroute', function () {
 			},
 		};
 	};
-	
-	//init with default route
-	
-	currentRoute = addOrGetRoute('xindex.html');
 })
 
 .directive('xview', function ($controller, xroute) {
@@ -60,7 +79,11 @@ angular.module('xroute', []).provider('xroute', function () {
 		template: '<div ng-include="templatePath"></div>',
 		link: function ($scope) {
 			
+			//expose xgoto on $scope
+			
 			$scope.xgoto = xroute.goto;
+			
+			//what to do when route changes
 			
 			var pending404 = false;
 			xroute.onRouteChange(function (newRoute, oldRoute, xparameters) {
@@ -83,8 +106,11 @@ angular.module('xroute', []).provider('xroute', function () {
 				}
 			});
 			
+			//set first page/route
+			
 			var currentRoute = xroute.getCurrentRoute();
 			if (currentRoute) xroute.goto(currentRoute.templateUrl);
+			else xroute.goto('xindex.html');
 		}
 	};
 })

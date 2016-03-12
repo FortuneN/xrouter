@@ -108,9 +108,8 @@ app.controller('home.html', function($scope, xparameters) {
 - The controllers are named the same as the page e.g. app.controller('home.html', function($scope) { ... });
 
 ## Credits
-- Stackoverflow question: <a href="http://stackoverflow.com/questions/26632909" target="_blank">26632909</a>
-- Stackoverflow user: <a href="http://stackoverflow.com/users/949476/dfsq" target="_blank">dfsq</a>
-
+- Stack Overflow : <a href="http://stackoverflow.com/questions/26632909/change-view-and-controller-without-updating-url-or-history" target="_blank">change view and controller without updating url or history</a>
+- Stack Overflow : <a href="http://stackoverflow.com/questions/15250644/loading-an-angularjs-controller-dynamically" target="_blank">loading an angularjs controller dynamically</a>
 
 ## TODO
 - have *.js files put in the same folder as *.html files

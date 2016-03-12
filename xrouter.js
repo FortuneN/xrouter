@@ -33,7 +33,7 @@ angular.module('xroute', []).provider('xroute', function () {
 	this.$get = function () {
 		return {
 			goto: function (path, parameters) {
-				if (!path || currentRoute.templateUrl == path) return;
+				if (!path || path == currentRoute.templateUrl) return;
 				if (path.indexOf(' ') != -1) throw 'Spaces are not allowed in page/route names';
 				var route = addOrGetRoute(path);
 				var xparameters = getQueryParameters(path);

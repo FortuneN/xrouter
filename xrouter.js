@@ -3,7 +3,7 @@ angular.module('xroute', []).provider('xroute', function () {
 	//fields
 	
 	var routes = {};
-	var stack = [];
+	var routeChangeCallbacks = [];
 	var currentRoute = null;
 	
 	//methods
@@ -58,14 +58,25 @@ angular.module('xroute', []).provider('xroute', function () {
 		return {
 			goto: function (path, parameters) {
 				addOrGetRoute(path, function(route) {
+					
 					var xparameters = getQueryParameters(path);
-					if (typeof parameters == 'string') for (var prop in parameters) xparameters[pop] = parameters[prop];
-					stack.forEach(function (callback) { callback(route, currentRoute, xparameters) });
+					if (typeof parameters == 'object') {
+						for (var prop in parameters) {
+							xparameters[pop] = parameters[prop];
+						}
+					}
+					
+					routeChangeCallbacks.forEach(function (callback) {
+						callback(route, currentRoute, xparameters);
+					});
+					
 					currentRoute = route;
 				});
 			},
 			onRouteChange: function (callback) {
-				stack.push(callback);
+				if (typeof callback == 'function') {
+					routeChangeCallbacks.push(callback);
+				}
 			},
 			getCurrentRoute: function () {
 				return currentRoute;

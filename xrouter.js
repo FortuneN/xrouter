@@ -48,7 +48,6 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	};
 	
 	function registerController(controllerName) {
-		var moduleName = null;
 		for (var mi = 0; mi < angular._xrouter_modulenames_.length; mi++) {
 			var queue = angular.module(angular._xrouter_modulenames_[mi])._invokeQueue;
 			for (var i = 0; i < queue.length; i++) {

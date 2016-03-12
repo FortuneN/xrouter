@@ -35,14 +35,15 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		head.appendChild(script);
 	};
 	
-	function registerController(moduleName, controllerName) {
+	function registerController(controllerName) {
 		// Here I cannot get the controller function directly so I
 		// need to loop through the module's _invokeQueue to get it
+		var moduleName = 'app'; //TODO: get module name dynamically/automatically
 		var queue = angular.module(moduleName)._invokeQueue;
-			for (var i = 0; i < queue.length; i++) {
+		for (var i = 0; i < queue.length; i++) {
 			var call = queue[i];
 			if (call[0] == "$controllerProvider" && call[1] == "register" && call[2][0] == controllerName) {
-				controllerProvider.register(controllerName, call[2][1]);
+				$controllerProvider.register(controllerName, call[2][1]);
 			}
 		}
 	};
@@ -59,7 +60,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		if (route) return callback && callback(route);
 		
 		loadScript(path + '.js', function() {
-			registerController("xrouter", path);
+			registerController(path);
 			route = routes[path] = { controller: path, templateUrl: path };
 			return callback && callback(route);
 		});

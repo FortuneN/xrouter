@@ -1,5 +1,15 @@
 angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	
+	//decorate
+	
+	(function(angular_module) {
+		angular.modules = [];
+		angular.module = function() {
+			if (arguments.length != 1)  angular.modules.push(arguments[0]);
+			return angular_module.apply(null, arguments);
+		}
+	})(angular.module);
+	
 	//fields
 	
 	var routes = {};
@@ -36,17 +46,15 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	};
 	
 	function registerController(controllerName) {
-		// Here I cannot get the controller function directly so I
-		// need to loop through the module's _invokeQueue to get it
-		var moduleName = 'app'; //TODO: get module name dynamically/automatically
-		var queue = angular.module(moduleName)._invokeQueue;
-		for (var i = 0; i < queue.length; i++) {
-			var call = queue[i];
-			if (call[0] == "$controllerProvider" && call[1] == "register" && call[2][0] == controllerName) {
-				$controllerProvider.register(controllerName, call[2][1]);
+		for (var mi = 0; mi < angular.modules.length; mi++) {
+			var queue = angular.module(angular.modules[mi])._invokeQueue;
+			for (var i = 0; i < queue.length; i++) {
+				var call = queue[i];
+				if (call[0] == "$controllerProvider" && call[1] == "register" && call[2][0] == controllerName) {
+					$controllerProvider.register(controllerName, call[2][1]);
+				}
 			}
 		}
-		$controllerProvider.register(controllerName, controllerName);
 	};
 	
 	function addOrGetRoute(path, callback) {

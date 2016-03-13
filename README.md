@@ -110,8 +110,3 @@ app.controller('home.html', function($scope, xparameters) {
 ## Credits
 - Stack Overflow : <a href="http://stackoverflow.com/questions/26632909/change-view-and-controller-without-updating-url-or-history" target="_blank">change view and controller without updating url or history</a>
 - Stack Overflow : <a href="http://stackoverflow.com/questions/15250644/loading-an-angularjs-controller-dynamically" target="_blank">loading an angularjs controller dynamically</a>
-
-## TODO
-- have *.js files put in the same folder as *.html files
-- allow user to change default files 'xindex.html' and 'x404.html'
-- allow user to specify a base path for urls

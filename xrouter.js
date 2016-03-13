@@ -32,21 +32,27 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		return result;
 	};
 	
-	function loadScript(url, callback)  {
+	function loadScript(url)  {
 		
 		// Adding the script tag to the head as suggested before
-		var head = document.getElementsByTagName('head')[0];
-		var script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.src = url;
+		//var head = document.getElementsByTagName('head')[0];
+		//var script = document.createElement('script');
+		//script.type = 'text/javascript';
+		//script.src = url;
 		
 		// Then bind the event to the callback function.
 		// There are several events for cross browser compatibility.
-		script.onreadystatechange = callback;
-		script.onload = callback;
+		//script.onreadystatechange = callback;
+		//script.onload = callback;
 		
 		// Fire the loading
-		head.appendChild(script);
+		//head.appendChild(script);
+		
+		var s = document.createElement('script');
+		s.async = true;
+		s.src = url;
+		var to = document.getElementsByTagName('script')[0];
+		to.parentNode.insertBefore(s, to);
 	};
 	
 	function registerController(controllerName) {
@@ -61,7 +67,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		}
 	};
 	
-	function addOrGetRoute(path, callback) {
+	function addOrGetRoute(path) {
 		
 		if (!path) throw 'path is required';
 		if (path.indexOf(' ') != -1) throw 'spaces are not allowed in page/route names';
@@ -72,11 +78,10 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		var route = routes[path];
 		if (route) callback(route);
 		
-		loadScript(path + '.js', function() {
-			registerController(path);
-			route = routes[path] = { controller: path, templateUrl: path };
-			callback(route);
-		});
+		loadScript(path + '.js');
+		registerController(path);
+		
+		return route = routes[path] = { controller: path, templateUrl: path };
 	};
 	
 	//public
@@ -84,25 +89,25 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	this.$get = function () {
 		return {
 			goto: function (path, parameters) {
-				addOrGetRoute(path, function(route) {
-					
-					//combine query string parameters and object parameters
-					
-					var xparameters = getQueryParameters(path);
-					if (typeof parameters == 'object') {
-						for (var prop in parameters) {
-							xparameters[pop] = parameters[prop];
-						}
+				
+				var route = addOrGetRoute(path);
+				
+				//combine query string parameters and object parameters
+				
+				var xparameters = getQueryParameters(path);
+				if (typeof parameters == 'object') {
+					for (var prop in parameters) {
+						xparameters[pop] = parameters[prop];
 					}
-					
-					//execute route change, with before and after invocations
-					
-					var _route = route, _currentRoute = currentRoute;
-					beforeRouteChangeCallbacks.forEach(function (callback) { callback(_route, _currentRoute, xparameters); });
-					changeRoute(_route, _currentRoute, xparameters);
-					currentRoute = _route;
-					afterRouteChangeCallbacks.forEach(function (callback) { callback(_route, _currentRoute, xparameters); });
-				});
+				}
+				
+				//execute route change, with before and after invocations
+				
+				var _route = route, _currentRoute = currentRoute;
+				beforeRouteChangeCallbacks.forEach(function (callback) { callback(_route, _currentRoute, xparameters); });
+				changeRoute(_route, _currentRoute, xparameters);
+				currentRoute = _route;
+				afterRouteChangeCallbacks.forEach(function (callback) { callback(_route, _currentRoute, xparameters); });
 			},
 			beforeRouteChange: function (callback) {
 				if (typeof callback == 'function') {

@@ -46,7 +46,11 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		script.onload = callback;
 		
 		// Fire the loading
-		head.appendChild(script);
+		try {
+			head.appendChild(script);
+		} catch(e) {
+			alert(e);
+		}
 	};
 	
 	function registerController(controllerName) {

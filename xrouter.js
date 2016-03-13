@@ -15,7 +15,9 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	//fields
 	
 	var routes = {};
-	var routeChangeCallbacks = [];
+	var beforeRouteChangeCallbacks = [];
+	var afterRouteChangeCallbacks = [];
+	var changeRoute = null;
 	var currentRoute = null;
 	
 	//methods
@@ -84,6 +86,8 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			goto: function (path, parameters) {
 				addOrGetRoute(path, function(route) {
 					
+					//combine query string parameters and object parameters
+					
 					var xparameters = getQueryParameters(path);
 					if (typeof parameters == 'object') {
 						for (var prop in parameters) {
@@ -91,16 +95,28 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 						}
 					}
 					
-					routeChangeCallbacks.forEach(function (callback) {
-						callback(route, currentRoute, xparameters);
-					});
+					//execute route change, with before and after invocations
 					
-					currentRoute = route;
+					var _route = route, _currentRoute = currentRoute;
+					beforeRouteChangeCallbacks.forEach(function (callback) { callback(_route, _currentRoute, xparameters); });
+					changeRoute(_route, _currentRoute, xparameters);
+					currentRoute = _route;
+					afterRouteChangeCallbacks.forEach(function (callback) { callback(_route, _currentRoute, xparameters); });
 				});
 			},
-			onRouteChange: function (callback) {
+			beforeRouteChange: function (callback) {
 				if (typeof callback == 'function') {
-					routeChangeCallbacks.push(callback);
+					beforeRouteChangeCallbacks.push(callback);
+				}
+			},
+			afterRouteChange: function (callback) {
+				if (typeof callback == 'function') {
+					afterRouteChangeCallbacks.push(callback);
+				}
+			},
+			_changeRoute: function (ffunctionn) {
+				if (typeof ffunctionn == 'function') {
+					changeRoute = ffunctionn;
 				}
 			},
 			getCurrentRoute: function () {
@@ -112,7 +128,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 
 .directive('xview', function ($controller, xroute) {
 	return {
-		template: '<div ng-include="templatePath"></div>',
+		template: '<div ng-include="templateUrl"></div>',
 		link: function ($scope) {
 			
 			//expose xgoto on $scope
@@ -122,11 +138,9 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			//what to do when route changes
 			
 			var pending404 = false;
-			xroute.onRouteChange(function (newRoute, oldRoute, xparameters) {
-				
-				$scope.templatePath = newRoute.templateUrl;
-				
+			xroute._changeRoute(function (newRoute, oldRoute, xparameters) {
 				try {
+					$scope.templateUrl = newRoute.templateUrl;
 					$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
 					pending404 = false;
 				} catch (e) {
@@ -144,9 +158,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			
 			//set first page/route
 			
-			var currentRoute = xroute.getCurrentRoute();
-			if (currentRoute) xroute.goto(currentRoute.templateUrl);
-			else xroute.goto('xindex.html');
+			xroute.goto('xindex.html');
 		}
 	};
 })

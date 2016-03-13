@@ -141,7 +141,9 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			xroute._changeRoute(function (newRoute, oldRoute, xparameters) {
 				try {
 					$scope.templateUrl = newRoute.templateUrl;
-					$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
+					$timeout(function(){
+						$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
+					});
 					pending404 = false;
 				} catch (e) {
 					var errorStr = (e + '');

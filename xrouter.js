@@ -126,7 +126,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 	};
 })
 
-.directive('xview', function ($controller, xroute) {
+.directive('xview', function ($controller, $timeout, xroute) {
 	return {
 		template: '<div ng-include="templateUrl"></div>',
 		link: function ($scope) {

@@ -52,7 +52,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		script.type = "text/javascript";
     		script.src = url;
     		script.async = false;
-		document.head.appendChild(script.src);
+		document.head.appendChild(script);
 	};
 	
 	function registerController(controllerName) {

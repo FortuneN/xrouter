@@ -9,48 +9,20 @@ Good for when you writing a componet to fit into a page that you don't own (or h
 index.html
 ```
 <html>
-  <head>
-    <title>xrouter</title>
-    <script type="text/javascript" src="angular.js"></script>
-    <script type="text/javascript" src="../xrouter.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-  </head>
-  <body ng-app="app">
-    <h1>Xrouter test</h1>
-    <a xhref="xindex.html">xindex.html</a> | <a xhref="home.html?a=b">home.html</a> | <a ng-click="xgoto('about.html')">about.html</a> | <a ng-click="xgoto('contacts.html?c=d')">contacts. | <a xhref="no where">no where</a>html</a> 
-    <div xview></div>
-  </body>
+	<head>
+		<title>xrouter</title>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+		<script type="text/javascript" src="https://rawgit.com/FortuneN/xrouter/master/xrouter.js"></script>
+		<script type="text/javascript">
+			var app = angular.module('app', ['xroute']);
+		</script>
+	</head>
+	<body ng-app="app">
+		<h1>Xrouter Demo</h1>
+		<a xhref="xindex.html">xindex.html</a> | <a xhref="home.html?a=b">home.html</a> | <a href="#" ng-click="xgoto('about.html')">about.html</a> | <a href="#" ng-click="xgoto('contacts.html?c=d')">contacts.html</a> | <a xhref="nowhere">no where</a>
+		<div xview></div>
+	</body>
 </html>
-```
-
-app.js
-```
-angular.module('app', ['xroute'])
-
-.controller('xindex.html', function ($scope, xparameters) {
-	console.log('xparameters: ', xparameters);
-	$scope.title = 'xindex.html';
-})
-
-.controller('x404.html', function ($scope, xparameters) {
-	console.log('xparameters: ', xparameters);
-	$scope.title = 'x404.html';
-})
-
-.controller('home.html', function ($scope, xparameters) {
-	console.log('xparameters: ', xparameters);
-	$scope.title = 'home.html';
-})
-
-.controller('about.html', function ($scope, xparameters) {
-	console.log('xparameters: ', xparameters);
-	$scope.title = 'about.html';
-})
-
-.controller('contacts.html', function ($scope, xparameters) {
-	console.log('xparameters: ', xparameters);
-	$scope.title = 'contacts.html';
-});
 ```
 
 ### xview

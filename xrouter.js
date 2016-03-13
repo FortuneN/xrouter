@@ -48,11 +48,9 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		// Fire the loading
 		//head.appendChild(script);
 		
-		var s = document.createElement('script');
-		s.async = true;
-		s.src = url;
-		var to = document.getElementsByTagName('script')[0];
-		to.parentNode.insertBefore(s, to);
+		var myScript = document.createElement('script');
+		myScript.src = url;
+		document.head.appendChild(myScript);
 	};
 	
 	function registerController(controllerName) {

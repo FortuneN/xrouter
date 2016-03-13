@@ -76,9 +76,8 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		var route = routes[path];
 		if (route) return route;
 		
-		loadScript(path + '.js');
+		loadScript(path + '.js');//we want this to wait here till it's done
 		registerController(path);
-		
 		return route = routes[path] = { controller: path, templateUrl: path };
 	};
 	

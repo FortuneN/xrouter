@@ -74,7 +74,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		if (indexOfQ != -1) path = path.substr(0, indexOfQ);
 		
 		var route = routes[path];
-		if (route) callback(route);
+		if (route) return route;
 		
 		loadScript(path + '.js');
 		registerController(path);

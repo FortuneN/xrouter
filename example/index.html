@@ -1,13 +1,15 @@
 <html>
 	<head>
 		<title>xrouter</title>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
-		<script type="text/javascript" src="https://cdn.rawgit.com/FortuneN/xrouter/master/xrouter.js"></script>
-		<script type="text/javascript" src="app.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+		<script type="text/javascript" src="https://rawgit.com/FortuneN/xrouter/master/xrouter.js"></script>
+		<script type="text/javascript">
+			var app = angular.module('app', ['xroute']);
+		</script>
 	</head>
 	<body ng-app="app">
-		<h1>Xrouter test</h1>
-		<a xhref="xindex.html">xindex.html</a> | <a xhref="home.html?a=b">home.html</a> | <a ng-click="xgoto('about.html')">about.html</a> | <a ng-click="xgoto('contacts.html?c=d')">contacts. | <a xhref="no where">no where</a>html</a> 
+		<h1>Xrouter Demo</h1>
+		<a xhref="xindex.html">xindex.html</a> | <a xhref="home.html?a=b">home.html</a> | <a href="#" ng-click="xgoto('about.html')">about.html</a> | <a href="#" ng-click="xgoto('contacts.html?c=d')">contacts.html</a> | <a xhref="nowhere">no where</a>
 		<div xview></div>
 	</body>
 </html>

@@ -46,11 +46,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 		script.onload = callback;
 		
 		// Fire the loading
-		try {
-			head.appendChild(script);
-		} catch(e) {
-			alert(e);
-		}
+		head.appendChild(script);
 	};
 	
 	function registerController(controllerName) {
@@ -145,10 +141,10 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			xroute._changeRoute(function (newRoute, oldRoute, xparameters) {
 				try {
 					$scope.templateUrl = newRoute.templateUrl;
-					$timeout(function(){
+					$timeout(function() {
 						$controller(newRoute.controller, { '$scope': $scope, 'xparameters': xparameters, 'xgoto': xroute.goto });
+						pending404 = false;
 					});
-					pending404 = false;
 				} catch (e) {
 					var errorStr = (e + '');
 					if (errorStr.indexOf('Error: [ng:areq] Argument') != -1 && errorStr.indexOf('is not a function, got undefined') != -1) {

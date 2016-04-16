@@ -129,7 +129,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 .directive('xview', function ($controller, $timeout, xroute) {
 	return {
 		template: '<div ng-include="templateUrl"></div>',
-		link: function ($scope) {
+		link: function ($scope, element, attrs) {
 			
 			//expose xgoto on $scope
 			
@@ -160,7 +160,7 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			
 			//set first page/route
 			
-			xroute.goto('xindex.html');
+			xroute.goto(attrs.xview ? attrs.xview : 'xindex.html');
 		}
 	};
 })

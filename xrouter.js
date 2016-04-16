@@ -177,7 +177,8 @@ angular.module('xroute', []).provider('xroute', function ($controllerProvider) {
 			
 			element.removeAttr('xhref');
 			element.attr('href', '#');
-			element.attr('ng-click', "xgoto('" + stringValue + "')");
+			//element.attr('ng-click', "xgoto('" + stringValue + "')");
+			element.attr('ng-mousedown', "xgoto('" + stringValue + "')");
 			
 			var fn = $compile(element);
 			return function (scope) { fn(scope); };
